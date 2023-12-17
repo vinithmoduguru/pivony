@@ -5,12 +5,12 @@ import { CategoryScale } from "chart.js"
 import ChartDataLabels from "chartjs-plugin-datalabels"
 import { Bar } from "react-chartjs-2"
 import { Card, CardBody, CardHeader, Spinner } from "reactstrap"
+import { COLORS, COMPOSITIONS } from "../shared"
 
 Chart.register(CategoryScale)
 Chart.register(ChartDataLabels)
 
 const AverageSection = () => {
-  const colors = ["#4401ab", "#cd2b8a", "#8c62cc", "#a2a7b0", "#e7e0f4"]
   const [chartData, setChartData] = useState({})
   const [loading, setLoading] = useState(false)
   const [spacingOffset, setSpacingOffset] = useState(20)
@@ -34,10 +34,10 @@ const AverageSection = () => {
           // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
           datasets: Array.from({ length: 5 }).map((_, idx) => {
             return {
-              label: ["K", "L", "M", "N", "O"][idx],
+              label: COMPOSITIONS[idx],
               // Averages the values in the composition array
               data: [data.reduce((a, b) => a + b.composition[idx], 0)],
-              backgroundColor: colors[idx],
+              backgroundColor: COLORS[idx],
               borderSkipped: false,
               barThickness: 50,
               borderRadius: {

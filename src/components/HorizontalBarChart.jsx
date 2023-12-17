@@ -6,13 +6,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels"
 import { Bar } from "react-chartjs-2"
 import { Card, Spinner } from "reactstrap"
 import AverageSection from "./AverageSection"
+import { COLORS, COMPOSITIONS } from "../shared"
 
 Chart.register(CategoryScale)
 Chart.register(ChartDataLabels)
 
 const BarChart = () => {
-  const COLORS = ["#4401ab", "#cd2b8a", "#8c62cc", "#a2a7b0", "#e7e0f4"]
-  const COMPOSITIONS = ["K", "L", "M", "N", "O"]
   const [chartData, setChartData] = useState({})
   const [loading, setLoading] = useState(false)
   const [prevHoveredState, setPrevHoveredState] = useState(undefined)
