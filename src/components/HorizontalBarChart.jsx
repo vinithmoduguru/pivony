@@ -14,8 +14,6 @@ Chart.register(ChartDataLabels)
 const BarChart = () => {
   const [chartData, setChartData] = useState({})
   const [loading, setLoading] = useState(false)
-  const [prevHoveredState, setPrevHoveredState] = useState(undefined)
-  const [hovered, setHovered] = useState(undefined)
   const [offset, setOffset] = useState(20)
 
   useEffect(() => {
