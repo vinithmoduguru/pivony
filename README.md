@@ -16,7 +16,7 @@ You may also see any lint errors in the console.
 
 # Deployment
 
-Check this - https://app.netlify.com/sites/enchanting-cocada-0d9259/deploys
+Check this - https://enchanting-cocada-0d9259.netlify.app/
 
 # Overview
 
