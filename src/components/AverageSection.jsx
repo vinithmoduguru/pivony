@@ -85,7 +85,7 @@ const AverageSection = () => {
                 datalabels: {
                   display: true,
                   color: function (context) {
-                    return context.dataset.backgroundColor == "#e7e0f4"
+                    return context.dataset.backgroundColor === "#e7e0f4"
                       ? "#4201ae"
                       : "#fff"
                   },
