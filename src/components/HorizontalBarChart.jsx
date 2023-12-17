@@ -20,7 +20,9 @@ const BarChart = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const response = await fetch("http://localhost:105/")
+        const response = await fetch(
+          "https://flask-production-6205.up.railway.app/"
+        )
         const data = await response.json()
         const chart = {
           labels: data.map((d) => d.name),
