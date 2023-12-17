@@ -15,6 +15,9 @@ const BarChart = () => {
   const COMPOSITIONS = ["K", "L", "M", "N", "O"]
   const [chartData, setChartData] = useState({})
   const [loading, setLoading] = useState(false)
+  const [prevHoveredState, setPrevHoveredState] = useState(undefined)
+  const [hovered, setHovered] = useState(undefined)
+  const [offset, setOffset] = useState(20)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,18 +63,12 @@ const BarChart = () => {
   const barPosition = {
     id: "barPosition",
     beforeDatasetsDraw(chart, args, pluginOptions) {
-      const { hovered } = chart
-
-      if (hovered === undefined) {
-        for (let i = 0; i < 4; i++) {
-          chart.getDatasetMeta(i).data.forEach((dataPoint, index) => {
-            dataPoint.x = dataPoint.x + 20
-          })
-        }
+      for (let i = 0; i < 4; i++) {
+        chart.getDatasetMeta(i).data.forEach((dataPoint, index) => {
+          dataPoint.x = dataPoint.x + offset
+        })
       }
-    },
-    beforeEvent(chart, args, pluginOptions) {
-      chart.hovered = args.event.type
+      setOffset(0)
     },
   }
 
@@ -85,8 +82,12 @@ const BarChart = () => {
             data={chartData}
             plugins={[barPosition]}
             options={{
+              hover: { mode: null },
               maintainAspectRatio: true,
               clip: true,
+              interaction: {
+                mode: null,
+              },
               plugins: {
                 title: {
                   display: false,
