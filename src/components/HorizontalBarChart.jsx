@@ -63,11 +63,13 @@ const BarChart = () => {
   const barPosition = {
     id: "barPosition",
     beforeDatasetsDraw(chart, args, pluginOptions) {
-      for (let i = 0; i < 4; i++) {
-        chart.getDatasetMeta(i).data.forEach((dataPoint, index) => {
-          dataPoint.x = dataPoint.x + offset
-        })
-      }
+      chart.data.datasets.forEach((dataset, i) => {
+        if (i !== chart.data.datasets?.length - 1) {
+          chart.getDatasetMeta(i).data.forEach((dataPoint, index) => {
+            dataPoint.x = dataPoint.x + offset
+          })
+        }
+      })
       setOffset(0)
     },
   }

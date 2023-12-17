@@ -13,7 +13,8 @@ const AverageSection = () => {
   const colors = ["#4401ab", "#cd2b8a", "#8c62cc", "#a2a7b0", "#e7e0f4"]
   const [chartData, setChartData] = useState({})
   const [loading, setLoading] = useState(false)
-
+  const [spacingOffset, setSpacingOffset] = useState(20)
+  const [totalCompositions, setTotalCompositions] = useState(0)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,6 +23,9 @@ const AverageSection = () => {
           "https://flask-production-6205.up.railway.app/"
         )
         const data = await response.json()
+        setTotalCompositions(
+          data.reduce((a, b) => a + b.composition.reduce((a, b) => a + b, 0), 0)
+        )
         const chart = {
           labels: ["Average"],
           options: {
@@ -31,19 +35,16 @@ const AverageSection = () => {
           datasets: Array.from({ length: 5 }).map((_, idx) => {
             return {
               label: ["K", "L", "M", "N", "O"][idx],
-              data: data.map((item) => item.composition[idx]),
+              // Averages the values in the composition array
+              data: [data.reduce((a, b) => a + b.composition[idx], 0)],
               backgroundColor: colors[idx],
               borderSkipped: false,
-
-              lineTension: 0.4, // Adjust the line tension to make the edges curvy
-              barThickness: 55,
-              borderWidth: 10,
-              borderColor: "white",
+              barThickness: 50,
               borderRadius: {
-                topLeft: 10,
-                topRight: 10,
-                bottomLeft: 10,
-                bottomRight: 10,
+                topLeft: 4,
+                topRight: 4,
+                bottomLeft: 4,
+                bottomRight: 4,
               },
             }
           }),
@@ -58,6 +59,27 @@ const AverageSection = () => {
     fetchData()
   }, [])
 
+  const adjustBarPosition = {
+    id: "adjustBarPosition",
+    beforeDatasetsDraw(chart, args, pluginOptions) {
+      chart.data.datasets.forEach((dataset, i) => {
+        chart.getDatasetMeta(i).data.forEach((dataPoint, index) => {
+          dataPoint.x -= spacingOffset
+        })
+      })
+      setSpacingOffset(0)
+    },
+    // beforeDraw(chart, args, options) {
+    //   const { ctx } = chart
+    //   // Check if the translation has not been applied yet
+    //   if (!chart.__translationApplied) {
+    //     // Apply translation only once
+    //     ctx.translate(30, 0)
+    //     chart.__translationApplied = true
+    //   }
+    // },
+  }
+
   return loading ? (
     <Spinner />
   ) : (
@@ -70,8 +92,14 @@ const AverageSection = () => {
       <CardBody>
         {chartData?.datasets?.length && (
           <Bar
+            plugins={[adjustBarPosition]}
             data={chartData}
             options={{
+              hover: { mode: null },
+              interaction: {
+                mode: null,
+              },
+              clip: true,
               maintainAspectRatio: false,
               plugins: {
                 title: {
@@ -101,9 +129,7 @@ const AverageSection = () => {
                     },
                   },
                   formatter: (value, ctx) => {
-                    const val =
-                      (value / ctx.dataset.data.reduce((a, b) => a + b, 0)) *
-                      100
+                    const val = (value / totalCompositions) * 100
                     return `${val.toFixed(0)}%`
                   },
                 },
@@ -115,6 +141,7 @@ const AverageSection = () => {
                     display: false,
                   },
                   stacked: true,
+                  beginAtZero: true,
                   grid: {
                     display: false,
                     drawTicks: false,
