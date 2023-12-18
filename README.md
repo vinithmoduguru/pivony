@@ -18,7 +18,4 @@ You may also see any lint errors in the console.
 
 Check this - https://enchanting-cocada-0d9259.netlify.app/
 
-# Overview
-
-https://www.loom.com/share/847ad3626a084e4b9191c74a122c1fe3?sid=81c35958-31b8-40b4-bf8b-f7b699ee21f6
 
