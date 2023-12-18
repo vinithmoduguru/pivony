@@ -12,7 +12,6 @@ dummy_data = [
 @app.route('/', methods=['GET'])
 def get_data():
     response = jsonify(dummy_data)
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 if __name__ == '__main__':
